@@ -9,12 +9,13 @@
 /* Begin PBXBuildFile section */
 		DE97F8C32613738400599A31 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F8C22613738400599A31 /* AppDelegate.swift */; };
 		DE97F8C52613738400599A31 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F8C42613738400599A31 /* SceneDelegate.swift */; };
-		DE97F8C72613738400599A31 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F8C62613738400599A31 /* ViewController.swift */; };
 		DE97F8CA2613738400599A31 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE97F8C82613738400599A31 /* Main.storyboard */; };
 		DE97F8CC2613738700599A31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE97F8CB2613738700599A31 /* Assets.xcassets */; };
 		DE97F8CF2613738700599A31 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE97F8CD2613738700599A31 /* LaunchScreen.storyboard */; };
 		DE97F8DA2613738700599A31 /* sendBirdTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F8D92613738700599A31 /* sendBirdTests.swift */; };
 		DE97F8E52613738700599A31 /* sendBirdUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F8E42613738700599A31 /* sendBirdUITests.swift */; };
+		DE97F8FB26137E9300599A31 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F8FA26137E9300599A31 /* SearchViewController.swift */; };
+		DE97F90D2619C20500599A31 /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F90C2619C20400599A31 /* ApiRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +39,6 @@
 		DE97F8BF2613738400599A31 /* sendBird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sendBird.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE97F8C22613738400599A31 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DE97F8C42613738400599A31 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		DE97F8C62613738400599A31 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DE97F8C92613738400599A31 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DE97F8CB2613738700599A31 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DE97F8CE2613738700599A31 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -49,6 +49,8 @@
 		DE97F8E02613738700599A31 /* sendBirdUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = sendBirdUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE97F8E42613738700599A31 /* sendBirdUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sendBirdUITests.swift; sourceTree = "<group>"; };
 		DE97F8E62613738700599A31 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DE97F8FA26137E9300599A31 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		DE97F90C2619C20400599A31 /* ApiRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,9 +101,10 @@
 		DE97F8C12613738400599A31 /* sendBird */ = {
 			isa = PBXGroup;
 			children = (
+				DE97F90B2619C1DD00599A31 /* network */,
+				DE97F8F826137E7200599A31 /* UI */,
 				DE97F8C22613738400599A31 /* AppDelegate.swift */,
 				DE97F8C42613738400599A31 /* SceneDelegate.swift */,
-				DE97F8C62613738400599A31 /* ViewController.swift */,
 				DE97F8C82613738400599A31 /* Main.storyboard */,
 				DE97F8CB2613738700599A31 /* Assets.xcassets */,
 				DE97F8CD2613738700599A31 /* LaunchScreen.storyboard */,
@@ -126,6 +129,30 @@
 				DE97F8E62613738700599A31 /* Info.plist */,
 			);
 			path = sendBirdUITests;
+			sourceTree = "<group>";
+		};
+		DE97F8F826137E7200599A31 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				DE97F8F926137E7C00599A31 /* Search */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		DE97F8F926137E7C00599A31 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				DE97F8FA26137E9300599A31 /* SearchViewController.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		DE97F90B2619C1DD00599A31 /* network */ = {
+			isa = PBXGroup;
+			children = (
+				DE97F90C2619C20400599A31 /* ApiRequest.swift */,
+			);
+			path = network;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,8 +285,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE97F8C72613738400599A31 /* ViewController.swift in Sources */,
 				DE97F8C32613738400599A31 /* AppDelegate.swift in Sources */,
+				DE97F8FB26137E9300599A31 /* SearchViewController.swift in Sources */,
+				DE97F90D2619C20500599A31 /* ApiRequest.swift in Sources */,
 				DE97F8C52613738400599A31 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -366,7 +394,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -421,7 +449,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
