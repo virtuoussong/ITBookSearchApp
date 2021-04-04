@@ -16,6 +16,10 @@
 		DE97F8E52613738700599A31 /* sendBirdUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F8E42613738700599A31 /* sendBirdUITests.swift */; };
 		DE97F8FB26137E9300599A31 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F8FA26137E9300599A31 /* SearchViewController.swift */; };
 		DE97F90D2619C20500599A31 /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F90C2619C20400599A31 /* ApiRequest.swift */; };
+		DE97F9182619E7D400599A31 /* BookItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F9172619E7D400599A31 /* BookItemView.swift */; };
+		DE97F91D2619ED6300599A31 /* BookSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F91C2619ED6300599A31 /* BookSearchViewModel.swift */; };
+		DE97F9232619F43E00599A31 /* UIImageView+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F9222619F43E00599A31 /* UIImageView+Extention.swift */; };
+		DE97F929261A09FD00599A31 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F928261A09FC00599A31 /* Book.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +55,10 @@
 		DE97F8E62613738700599A31 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DE97F8FA26137E9300599A31 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		DE97F90C2619C20400599A31 /* ApiRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRequest.swift; sourceTree = "<group>"; };
+		DE97F9172619E7D400599A31 /* BookItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookItemView.swift; sourceTree = "<group>"; };
+		DE97F91C2619ED6300599A31 /* BookSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookSearchViewModel.swift; sourceTree = "<group>"; };
+		DE97F9222619F43E00599A31 /* UIImageView+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extention.swift"; sourceTree = "<group>"; };
+		DE97F928261A09FC00599A31 /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +109,8 @@
 		DE97F8C12613738400599A31 /* sendBird */ = {
 			isa = PBXGroup;
 			children = (
+				DE97F927261A09D900599A31 /* model */,
+				DE97F9212619F41F00599A31 /* extention */,
 				DE97F90B2619C1DD00599A31 /* network */,
 				DE97F8F826137E7200599A31 /* UI */,
 				DE97F8C22613738400599A31 /* AppDelegate.swift */,
@@ -143,6 +153,8 @@
 			isa = PBXGroup;
 			children = (
 				DE97F8FA26137E9300599A31 /* SearchViewController.swift */,
+				DE97F9172619E7D400599A31 /* BookItemView.swift */,
+				DE97F91C2619ED6300599A31 /* BookSearchViewModel.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -153,6 +165,22 @@
 				DE97F90C2619C20400599A31 /* ApiRequest.swift */,
 			);
 			path = network;
+			sourceTree = "<group>";
+		};
+		DE97F9212619F41F00599A31 /* extention */ = {
+			isa = PBXGroup;
+			children = (
+				DE97F9222619F43E00599A31 /* UIImageView+Extention.swift */,
+			);
+			path = extention;
+			sourceTree = "<group>";
+		};
+		DE97F927261A09D900599A31 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				DE97F928261A09FC00599A31 /* Book.swift */,
+			);
+			path = model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -285,6 +313,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE97F929261A09FD00599A31 /* Book.swift in Sources */,
+				DE97F9182619E7D400599A31 /* BookItemView.swift in Sources */,
+				DE97F9232619F43E00599A31 /* UIImageView+Extention.swift in Sources */,
+				DE97F91D2619ED6300599A31 /* BookSearchViewModel.swift in Sources */,
 				DE97F8C32613738400599A31 /* AppDelegate.swift in Sources */,
 				DE97F8FB26137E9300599A31 /* SearchViewController.swift in Sources */,
 				DE97F90D2619C20500599A31 /* ApiRequest.swift in Sources */,
