@@ -11,6 +11,16 @@ import UIKit
 class SearchViewController: UIViewController {
     
     //MARK: - UI Component
+    lazy var searchBar: UISearchBar = {
+        let s = UISearchBar()
+        s.placeholder = "Search by keyword"
+        s.delegate = self
+        s.backgroundColor = .white
+        s.searchBarStyle = .default
+        s.translatesAutoresizingMaskIntoConstraints = false
+        return s
+    }()
+    
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let c = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -30,11 +40,10 @@ class SearchViewController: UIViewController {
         view.backgroundColor = .white
         addSubViews()
         makeConstrains()
-        searchBookAPIReqeust()
     }
     
     func addSubViews() {
-        [collectionView].forEach({ view.addSubview($0) })
+        [searchBar, collectionView].forEach({ view.addSubview($0) })
     }
     
     func makeConstrains() {
@@ -46,7 +55,12 @@ class SearchViewController: UIViewController {
         }
         
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: viewGuide.topAnchor, constant: 0),
+            searchBar.topAnchor.constraint(equalTo: viewGuide.topAnchor),
+            searchBar.leftAnchor.constraint(equalTo: view.leftAnchor),
+            searchBar.rightAnchor.constraint(equalTo: view.rightAnchor),
+            searchBar.heightAnchor.constraint(equalToConstant: 50),
+            
+            collectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
             collectionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
             collectionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
             collectionView.bottomAnchor.constraint(equalTo: viewGuide.bottomAnchor, constant: 0)
@@ -81,13 +95,36 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-private extension SearchViewController {
+extension SearchViewController: UISearchBarDelegate {
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        self.searchBar.setShowsCancelButton(true, animated: true)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.searchBar.resignFirstResponder()
+        self.searchBar.setShowsCancelButton(false, animated: true)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text else { return }
+        searchBookAPIReqeust(text: text)
+        self.searchBar.resignFirstResponder()
+        self.searchBar.setShowsCancelButton(false, animated: true)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == " " {
+            return false
+        }
+        return true
+    }
     
 }
 
 private extension SearchViewController {
-    func searchBookAPIReqeust() {
-        let url = "https://api.itbook.store/1.0/search/\("success")"
+    func searchBookAPIReqeust(text: String) {
+        let url = "https://api.itbook.store/1.0/search/\(text)"
         ApiRequest.request(url: url, method: .get) { [weak self] (success, response: BookSearch?) in
             guard let self = self else { return }
             if success {

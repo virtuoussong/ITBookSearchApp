@@ -19,7 +19,6 @@ class BookItemView: UICollectionViewCell {
         b.translatesAutoresizingMaskIntoConstraints = false
         b.layer.cornerRadius = 8
         b.clipsToBounds = true
-        b.backgroundColor = .yellow
         return b
     }()
     
@@ -67,6 +66,7 @@ class BookItemView: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         addSubViews()
         setupView()
     }
