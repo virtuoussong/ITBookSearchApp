@@ -183,14 +183,14 @@ class BookDetailViewController: UIViewController {
             if let isbn13 = dataSet?.isbn13 {
                 isbn13Label.text = "isbn13: \(isbn13)"
             }
+            
+            setupScrollViewContents()
         }
     }
     
-    convenience init(data: BookDetail? = nil) {
+    convenience init(id: String) {
         self.init()
-        defer {
-            self.dataSet = data
-        }
+        getBookDetailData(id: id)
     }
     
 }
@@ -220,7 +220,9 @@ private extension BookDetailViewController {
             scrollView.rightAnchor.constraint(equalTo: view.rightAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        
+    }
+    
+    func setupScrollViewContents() {
         stackView.layoutIfNeeded()
         scrollView.contentSize = CGSize(width: view.frame.width, height: stackView.frame.height)
         scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 98, right: 0)
@@ -244,6 +246,16 @@ private extension BookDetailViewController {
             purchButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -24),
             purchButton.heightAnchor.constraint(equalToConstant: 50)
         ])
+    }
+    
+    func getBookDetailData(id: String) {
+        ApiRequest.shared.request(url: ApiEndPoint.getBookDetail(id).address, method: .get) { [weak self] (isSuccessful, response: BookDetail?) in
+            if let data = response {
+                DispatchQueue.main.async {
+                    self?.dataSet = data
+                }
+            }
+        }
     }
 }
 

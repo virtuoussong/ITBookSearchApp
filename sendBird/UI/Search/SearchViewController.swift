@@ -93,16 +93,8 @@ extension SearchViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let id = viewModel.data[indexPath.item].isbn13 {
-            ApiRequest.shared.request(url: ApiEndPoint.getBookDetail(id).address, method: .get) { [weak self] (isSuccessful, response: BookDetail?) in
-                if let data = response {
-                    DispatchQueue.main.async {
-//                        let viewController = BookDetailViewController(data: data)
-                        let viewController = BookDetailViewController.init(data: data)
-
-                        self?.navigationController?.pushViewController(viewController, animated: true)
-                    }
-                }
-            }
+            let viewController = BookDetailViewController(id: id)
+            self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
 }
