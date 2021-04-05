@@ -35,6 +35,8 @@ class SearchViewController: UIViewController {
     
     //MARK: - Properties
     var viewModel = BookSearchViewModel()
+    var currentPage = "1"
+    var searchedWord = ""
     
     override func viewDidLoad() {
         view.backgroundColor = .white
@@ -82,6 +84,26 @@ extension SearchViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         print(indexPath.item)
+        let index = Double(indexPath.item)
+        if index > Double(viewModel.data.count) * 0.7 {
+            guard let page = Int(currentPage) else { return }
+            searchBookAPIReqeust(text: searchedWord, page: page + 1)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let id = viewModel.data[indexPath.item].isbn13 {
+            ApiRequest.shared.request(url: ApiEndPoint.getBookDetail(id).address, method: .get) { [weak self] (isSuccessful, response: BookDetail?) in
+                if let data = response {
+                    DispatchQueue.main.async {
+//                        let viewController = BookDetailViewController(data: data)
+                        let viewController = BookDetailViewController.init(data: data)
+
+                        self?.navigationController?.pushViewController(viewController, animated: true)
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -108,7 +130,11 @@ extension SearchViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text else { return }
-        searchBookAPIReqeust(text: text)
+        if text != searchedWord {
+            self.searchBookAPIReqeust(text: text, page: 1)
+        }
+        self.searchedWord = text
+        self.searchBookAPIReqeust(text: text)
         self.searchBar.resignFirstResponder()
         self.searchBar.setShowsCancelButton(false, animated: true)
     }
@@ -123,18 +149,48 @@ extension SearchViewController: UISearchBarDelegate {
 }
 
 private extension SearchViewController {
-    func searchBookAPIReqeust(text: String) {
-        let url = "https://api.itbook.store/1.0/search/\(text)"
-        ApiRequest.request(url: url, method: .get) { [weak self] (success, response: BookSearch?) in
-            guard let self = self else { return }
-            if success {
-                if let books = response?.books {
-                    self.viewModel.data = books
-                    DispatchQueue.main.async {
-                        self.collectionView.reloadData()
+    func searchBookAPIReqeust(text: String, page: Int = 1) {
+        var url: String = ""
+        url = ApiEndPoint.getSearchResult(text, page).address
+        
+        if page > 1 {
+//            url = ApiEndPoint.getSearchResult(text, page).address
+        } else {
+//            url = "https://api.itbook.store/1.0/search/\(text)"
+            self.viewModel.data.removeAll()
+            self.collectionView.reloadData()
+        }
+//        DispatchQueue.global(qos: .userInteractive).sync {
+            ApiRequest.shared.request(url: url, method: .get) { [weak self] (success, response: BookSearch?) in
+                guard let self = self else { return }
+                if success {
+                    print(response)
+                    if let books = response?.books {
+                        if page == 1 {
+                            self.viewModel.data = books
+                        } else {
+                            books.enumerated().forEach({ (index, item) in
+                                if !self.viewModel.data.contains(where: { (data) -> Bool in
+                                    data.isbn13 == item.isbn13
+                                }) {
+                                    self.viewModel.data.append(item)
+                                }
+                            })
+                        }
+                        
+                        DispatchQueue.main.async {
+                            self.collectionView.reloadData()
+                        }
+                    }
+                    
+                    if let pageNumResponse = response?.page {
+                        self.currentPage = pageNumResponse
                     }
                 }
             }
-        }
+//        }
+        
+        
+        
     }
 }

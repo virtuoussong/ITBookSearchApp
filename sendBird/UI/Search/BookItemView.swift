@@ -55,6 +55,7 @@ class BookItemView: UICollectionViewCell {
             }
             
             if let imageUrl = dataSet?.image {
+                bookImageView.image = nil
                 bookImageView.loadImageFromUrl(urlString: imageUrl)
             }
             
@@ -64,9 +65,12 @@ class BookItemView: UICollectionViewCell {
         }
     }
     
+    override func prepareForReuse() {
+        self.bookImageView.image = nil
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         addSubViews()
         setupView()
     }

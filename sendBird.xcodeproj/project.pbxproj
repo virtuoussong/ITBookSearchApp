@@ -20,6 +20,9 @@
 		DE97F91D2619ED6300599A31 /* BookSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F91C2619ED6300599A31 /* BookSearchViewModel.swift */; };
 		DE97F9232619F43E00599A31 /* UIImageView+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F9222619F43E00599A31 /* UIImageView+Extention.swift */; };
 		DE97F929261A09FD00599A31 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F928261A09FC00599A31 /* Book.swift */; };
+		DE97F92F261A163800599A31 /* InfiniteScrollCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F92E261A163800599A31 /* InfiniteScrollCollectionView.swift */; };
+		DE97F934261A16C000599A31 /* InfiniteScrollable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F933261A16C000599A31 /* InfiniteScrollable.swift */; };
+		DE97F946261B0C7000599A31 /* BookDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F945261B0C6E00599A31 /* BookDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +62,9 @@
 		DE97F91C2619ED6300599A31 /* BookSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookSearchViewModel.swift; sourceTree = "<group>"; };
 		DE97F9222619F43E00599A31 /* UIImageView+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extention.swift"; sourceTree = "<group>"; };
 		DE97F928261A09FC00599A31 /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
+		DE97F92E261A163800599A31 /* InfiniteScrollCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteScrollCollectionView.swift; sourceTree = "<group>"; };
+		DE97F933261A16C000599A31 /* InfiniteScrollable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteScrollable.swift; sourceTree = "<group>"; };
+		DE97F945261B0C6E00599A31 /* BookDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,9 +115,10 @@
 		DE97F8C12613738400599A31 /* sendBird */ = {
 			isa = PBXGroup;
 			children = (
-				DE97F927261A09D900599A31 /* model */,
-				DE97F9212619F41F00599A31 /* extention */,
-				DE97F90B2619C1DD00599A31 /* network */,
+				DE97F92D261A161000599A31 /* Module */,
+				DE97F927261A09D900599A31 /* Model */,
+				DE97F9212619F41F00599A31 /* Extention */,
+				DE97F90B2619C1DD00599A31 /* Network */,
 				DE97F8F826137E7200599A31 /* UI */,
 				DE97F8C22613738400599A31 /* AppDelegate.swift */,
 				DE97F8C42613738400599A31 /* SceneDelegate.swift */,
@@ -144,6 +151,7 @@
 		DE97F8F826137E7200599A31 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				DE97F938261B0C2B00599A31 /* Book Detail */,
 				DE97F8F926137E7C00599A31 /* Search */,
 			);
 			path = UI;
@@ -159,28 +167,45 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
-		DE97F90B2619C1DD00599A31 /* network */ = {
+		DE97F90B2619C1DD00599A31 /* Network */ = {
 			isa = PBXGroup;
 			children = (
 				DE97F90C2619C20400599A31 /* ApiRequest.swift */,
 			);
-			path = network;
+			path = Network;
 			sourceTree = "<group>";
 		};
-		DE97F9212619F41F00599A31 /* extention */ = {
+		DE97F9212619F41F00599A31 /* Extention */ = {
 			isa = PBXGroup;
 			children = (
 				DE97F9222619F43E00599A31 /* UIImageView+Extention.swift */,
 			);
-			path = extention;
+			path = Extention;
 			sourceTree = "<group>";
 		};
-		DE97F927261A09D900599A31 /* model */ = {
+		DE97F927261A09D900599A31 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				DE97F928261A09FC00599A31 /* Book.swift */,
 			);
-			path = model;
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DE97F92D261A161000599A31 /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				DE97F92E261A163800599A31 /* InfiniteScrollCollectionView.swift */,
+				DE97F933261A16C000599A31 /* InfiniteScrollable.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		DE97F938261B0C2B00599A31 /* Book Detail */ = {
+			isa = PBXGroup;
+			children = (
+				DE97F945261B0C6E00599A31 /* BookDetailViewController.swift */,
+			);
+			path = "Book Detail";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -314,7 +339,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE97F929261A09FD00599A31 /* Book.swift in Sources */,
+				DE97F92F261A163800599A31 /* InfiniteScrollCollectionView.swift in Sources */,
+				DE97F934261A16C000599A31 /* InfiniteScrollable.swift in Sources */,
 				DE97F9182619E7D400599A31 /* BookItemView.swift in Sources */,
+				DE97F946261B0C7000599A31 /* BookDetailViewController.swift in Sources */,
 				DE97F9232619F43E00599A31 /* UIImageView+Extention.swift in Sources */,
 				DE97F91D2619ED6300599A31 /* BookSearchViewModel.swift in Sources */,
 				DE97F8C32613738400599A31 /* AppDelegate.swift in Sources */,
