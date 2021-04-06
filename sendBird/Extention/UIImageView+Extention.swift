@@ -8,30 +8,33 @@
 import Foundation
 import UIKit
 
-let imageCache = NSCache<NSString, UIImage>()
+
+class ImageCache {
+    static let imageCache = NSCache<NSString, UIImage>()
+}
 
 extension UIImageView {
-    func loadImageFromUrl(urlString: String) {
-        guard let url = URL(string: urlString) else { return }
+    func loadImageFromUrl(urlString: String) -> URLSessionDataTask? {
+        guard let url = URL(string: urlString) else { return nil }
         
         self.image = nil
         
-        if let imageInCache = imageCache.object(forKey: urlString as NSString) as? UIImage {
+        if let imageInCache = ImageCache.imageCache.object(forKey: urlString as NSString) {
             self.image = imageInCache
-            return
+            return nil
         }
         
         let session = URLSession.shared
         let task = session.dataTask(with: url) { (data, response, error) in
             if error != nil {
-                print(error)
+                print(error as Any)
                 return
             }
     
             if let imageData = data {
                 DispatchQueue.main.async {
                     if let imageForCache = UIImage(data: imageData) {
-                        imageCache.setObject(imageForCache, forKey: urlString as NSString)
+                        ImageCache.imageCache.setObject(imageForCache, forKey: urlString as NSString)
                         self.image = imageForCache
                     }
                 }
@@ -39,5 +42,7 @@ extension UIImageView {
         }
         
         task.resume()
+        
+        return task
     }
 }

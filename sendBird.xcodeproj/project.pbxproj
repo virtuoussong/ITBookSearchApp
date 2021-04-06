@@ -20,8 +20,6 @@
 		DE97F91D2619ED6300599A31 /* BookSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F91C2619ED6300599A31 /* BookSearchViewModel.swift */; };
 		DE97F9232619F43E00599A31 /* UIImageView+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F9222619F43E00599A31 /* UIImageView+Extention.swift */; };
 		DE97F929261A09FD00599A31 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F928261A09FC00599A31 /* Book.swift */; };
-		DE97F92F261A163800599A31 /* InfiniteScrollCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F92E261A163800599A31 /* InfiniteScrollCollectionView.swift */; };
-		DE97F934261A16C000599A31 /* InfiniteScrollable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F933261A16C000599A31 /* InfiniteScrollable.swift */; };
 		DE97F946261B0C7000599A31 /* BookDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F945261B0C6E00599A31 /* BookDetailViewController.swift */; };
 		DE97F951261BE48100599A31 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F950261BE47F00599A31 /* Observable.swift */; };
 		DE97F957261BEDFF00599A31 /* TextHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F956261BEDFF00599A31 /* TextHeight.swift */; };
@@ -65,8 +63,6 @@
 		DE97F91C2619ED6300599A31 /* BookSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookSearchViewModel.swift; sourceTree = "<group>"; };
 		DE97F9222619F43E00599A31 /* UIImageView+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extention.swift"; sourceTree = "<group>"; };
 		DE97F928261A09FC00599A31 /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
-		DE97F92E261A163800599A31 /* InfiniteScrollCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteScrollCollectionView.swift; sourceTree = "<group>"; };
-		DE97F933261A16C000599A31 /* InfiniteScrollable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteScrollable.swift; sourceTree = "<group>"; };
 		DE97F945261B0C6E00599A31 /* BookDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailViewController.swift; sourceTree = "<group>"; };
 		DE97F950261BE47F00599A31 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		DE97F956261BEDFF00599A31 /* TextHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHeight.swift; sourceTree = "<group>"; };
@@ -202,8 +198,6 @@
 		DE97F92D261A161000599A31 /* Module */ = {
 			isa = PBXGroup;
 			children = (
-				DE97F92E261A163800599A31 /* InfiniteScrollCollectionView.swift */,
-				DE97F933261A16C000599A31 /* InfiniteScrollable.swift */,
 				DE97F950261BE47F00599A31 /* Observable.swift */,
 			);
 			path = Module;
@@ -356,8 +350,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE97F929261A09FD00599A31 /* Book.swift in Sources */,
-				DE97F92F261A163800599A31 /* InfiniteScrollCollectionView.swift in Sources */,
-				DE97F934261A16C000599A31 /* InfiniteScrollable.swift in Sources */,
 				DE97F9182619E7D400599A31 /* BookItemView.swift in Sources */,
 				DE97F951261BE48100599A31 /* Observable.swift in Sources */,
 				DE97F965261C2E8300599A31 /* BookDetail.swift in Sources */,

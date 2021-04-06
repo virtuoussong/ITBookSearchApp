@@ -82,10 +82,9 @@ class BookItemView: UICollectionViewCell {
     //MARK: - Properties
     var dataSet: Book? {
         didSet {
-
             if let imageUrl = dataSet?.image {
                 bookImageView.image = nil
-                bookImageView.loadImageFromUrl(urlString: imageUrl)
+                configureImageWith(urlString: imageUrl)
             }
             
             if let bookName = dataSet?.title {
@@ -108,9 +107,7 @@ class BookItemView: UICollectionViewCell {
         }
     }
     
-    override func prepareForReuse() {
-        self.bookImageView.image = nil
-    }
+    private var task: URLSessionDataTask?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -118,6 +115,22 @@ class BookItemView: UICollectionViewCell {
         setupView()
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+//MARK: - Prepare to reuse
+extension BookItemView {
+    override func prepareForReuse() {
+        self.task?.cancel()
+        self.task = nil
+        self.bookImageView.image = nil
+    }
+}
+
+//MARK: - Setup view
+private extension BookItemView {
     func addSubViews() {
         [bookImageView, stackView, grayLine].forEach({ contentView.addSubview($0) })
         [bookNameLabel, subTitleLabel, subInfoStackView].forEach({ stackView.addArrangedSubview($0) })
@@ -145,9 +158,10 @@ class BookItemView: UICollectionViewCell {
         ])
     }
     
-
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    func configureImageWith(urlString: String) {
+        if task == nil {
+            task = bookImageView.loadImageFromUrl(urlString: urlString)
+        }
     }
+
 }

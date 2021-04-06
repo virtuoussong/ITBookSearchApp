@@ -7,9 +7,6 @@
 
 import Foundation
 
-
-//let apiCache = NSCache<NSString, AnyObject>()
-
 class ApiCache<T>{
     let cacheData: T
     
@@ -26,9 +23,9 @@ class ApiRequest {
         
     func request<T: Codable>(url: String, method: ApiMethod, params: [Dictionary<String, String>]? = nil, completion: @escaping (Bool, T?) -> Void) {
         
-        if let searchCache = cacheData.object(forKey: url as NSString) as? ApiCache {
+        if let searchCache = cacheData.object(forKey: url as NSString) {
             DispatchQueue.main.async {
-                completion(true, searchCache.cacheData as! T)
+                completion(true, searchCache.cacheData as? T)
             }
             
             return
@@ -66,33 +63,14 @@ class ApiRequest {
                     completion(false, nil)
                 }
             case 400:
-                print("error", error)
+                print("error", error as Any)
                 completion(false, nil)
             case 500:
-                print("error", error)
+                print("error", error as Any)
                 completion(false, nil)
             default:
                 break
             }
-            
-//            if httpResponse.statusCode == 200 {
-//                do {
-//                    let json = try JSONSerialization.jsonObject(with: data!, options: [])
-//                    print("json: \(json)")
-//
-//                    let jsonDecode = try JSONDecoder().decode(T.self, from: data!)
-//                    self.cacheData.setObject(ApiCache(data: jsonDecode), forKey: url as NSString)
-//                    DispatchQueue.main.async {
-//                        completion(true, jsonDecode)
-//                    }
-//
-//                } catch {
-//                    print("error", error)
-//                    completion(false, nil)
-//                }
-//            } else {
-//                completion(false, nil)
-//            }
         })
         
         task.resume()

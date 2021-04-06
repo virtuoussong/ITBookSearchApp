@@ -217,7 +217,11 @@ class BookDetailViewController: UIViewController {
         
     convenience init(id: String) {
         self.init()
-        getBookDetailData(id: id)
+        fetchBookDetailData(id: id)
+    }
+    
+    deinit {
+        print("Book Detail denit successful")
     }
     
 }
@@ -291,13 +295,6 @@ private extension BookDetailViewController {
         ])
     }
     
-    func getBookDetailData(id: String) {
-        ApiRequest.shared.request(url: ApiEndPoint.getBookDetail(id).address, method: .get) { [weak self] (isSuccessful, response: BookDetail?) in
-            if let data = response {
-                self?.dataSet = data
-            }
-        }
-    }
     
     func addDoneButtonOnKeyboard(){
         let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
@@ -317,10 +314,7 @@ private extension BookDetailViewController {
         let size = CGSize(width: view.frame.width - 48, height: .infinity)
         let estimatedSize = noteTextView.sizeThatFits(size)
         print(estimatedSize.height)
-        var height: CGFloat = 0
-        if estimatedSize.height > 100 {
-            height = estimatedSize.height
-        }
+        let height: CGFloat = estimatedSize.height > 100 ? estimatedSize.height : 100
         noteTextView.constraints.forEach { (constraint) in
             if constraint.firstAttribute == .height {
                 constraint.constant = height
@@ -351,9 +345,19 @@ private extension BookDetailViewController {
                         let scrollAmount = keyboardY + 200 + cursurPosition
                         let scrollPont = CGPoint(x: 0, y: scrollAmount)
                         self.scrollView.setContentOffset(scrollPont, animated: true)
-                        
                     }
                 }
+            }
+        }
+    }
+}
+
+//MARK: - API Call
+private extension BookDetailViewController {
+    func fetchBookDetailData(id: String) {
+        ApiRequest.shared.request(url: ApiEndPoint.getBookDetail(id).address, method: .get) { [weak self] (isSuccessful, response: BookDetail?) in
+            if let data = response {
+                self?.dataSet = data
             }
         }
     }

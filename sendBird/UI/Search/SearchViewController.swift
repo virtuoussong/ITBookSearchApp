@@ -23,8 +23,6 @@ class SearchViewController: UIViewController {
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-//        layout.estimatedItemSize = CGSize(width: view.frame.width, height: 400)
-        
         let c = UICollectionView(frame: .zero, collectionViewLayout: layout)
         c.register(BookItemView.self, forCellWithReuseIdentifier: "BookItemView")
         c.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
@@ -35,6 +33,16 @@ class SearchViewController: UIViewController {
         return c
     }()
     
+    let noResultLabel: UILabel = {
+        let n = UILabel()
+        n.text = "Search books by keyword"
+        n.numberOfLines = 0
+        n.font = UIFont.systemFont(ofSize: 18)
+        n.textColor = .darkGray
+        n.translatesAutoresizingMaskIntoConstraints = false
+        return n
+    }()
+    
     //MARK: - Properties
     var viewModel = BookSearchViewModel()
     var currentPage = "1"
@@ -42,9 +50,10 @@ class SearchViewController: UIViewController {
     var cellHeightCache: [String: CGSize] = [:]
 }
 
+//MARK: - Setup Views
 private extension SearchViewController {
     func addSubViews() {
-        [searchBar, collectionView].forEach({ view.addSubview($0) })
+        [self.searchBar, self.collectionView, self.noResultLabel].forEach({ view.addSubview($0) })
     }
     
     func makeConstrains() {
@@ -56,68 +65,78 @@ private extension SearchViewController {
         }
         
         NSLayoutConstraint.activate([
-            searchBar.topAnchor.constraint(equalTo: viewGuide.topAnchor),
-            searchBar.leftAnchor.constraint(equalTo: view.leftAnchor),
-            searchBar.rightAnchor.constraint(equalTo: view.rightAnchor),
-            searchBar.heightAnchor.constraint(equalToConstant: 50),
+            self.searchBar.topAnchor.constraint(equalTo: viewGuide.topAnchor),
+            self.searchBar.leftAnchor.constraint(equalTo: view.leftAnchor),
+            self.searchBar.rightAnchor.constraint(equalTo: view.rightAnchor),
+            self.searchBar.heightAnchor.constraint(equalToConstant: 50),
             
-            collectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
-            collectionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
-            collectionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+            self.collectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
+            self.collectionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
+            self.collectionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
+            self.collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+            
+            self.noResultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            self.noResultLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
-    
+}
+
+//MARK: - Bind ViewModel
+private extension SearchViewController {
     func bindViewModel() {
-        viewModel.data.bind { [unowned self] _ in
+        viewModel.data.bind { [unowned self] data in
+            self.collectionView.isHidden = !(data?.count ?? 0 > 0)
+            self.noResultLabel.isHidden = data?.count ?? 0 > 0
             self.collectionView.reloadData()
         }
     }
 }
 
+//MARK: - Life cycle
 extension SearchViewController {
     override func viewDidLoad() {
         view.backgroundColor = .white
-        addSubViews()
-        makeConstrains()
-        bindViewModel()
+        self.addSubViews()
+        self.makeConstrains()
+        self.bindViewModel()
     }
 }
 
 
-
+//MARK: - CollectionView Datasource delegate
 extension SearchViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.data.value?.count ?? 0
+        return self.viewModel.data.value?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BookItemView", for: indexPath) as! BookItemView
-        let item = viewModel.data.value?[indexPath.item]
+        let item = self.viewModel.data.value?[indexPath.item]
         cell.dataSet = item
         return cell
     }
         
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let index = Double(indexPath.item)
-        if index > Double(viewModel.data.value?.count ?? 0) * 0.7 {
-            guard let page = Int(currentPage) else { return }
-            searchBookAPIReqeust(text: searchedWord, page: page + 1)
+        if index > Double(self.viewModel.data.value?.count ?? 0) * 0.7 {
+            guard let page = Int(self.currentPage) else { return }
+            self.searchBookAPIReqeust(text: searchedWord, page: page + 1)
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let id = viewModel.data.value?[indexPath.item].isbn13 {
+        if let id = self.viewModel.data.value?[indexPath.item].isbn13 {
             let viewController = BookDetailViewController(id: id)
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
 }
 
+//MARK: - CollectionView flowlayout delegate
 extension SearchViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let data = viewModel.data.value?[indexPath.item]
-        if let id = data?.isbn13, let size = cellHeightCache[id] {
+        if let id = data?.isbn13, let size = self.cellHeightCache[id] {
             return size
         }
         
@@ -132,13 +151,14 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
         
         let size = CGSize(width: view.frame.width, height: total)
         if let id = data?.isbn13 {
-            cellHeightCache[id] = size
+            self.cellHeightCache[id] = size
         }
         
         return size
     }
 }
 
+//MARK: - Scrollview delegate
 extension SearchViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.searchBar.resignFirstResponder()
@@ -146,7 +166,7 @@ extension SearchViewController: UIScrollViewDelegate {
     }
 }
 
-
+//MARK: - SearchBar delegate
 extension SearchViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -177,6 +197,7 @@ extension SearchViewController: UISearchBarDelegate {
     }
 }
 
+//MARK: - API Call
 private extension SearchViewController {
     func searchBookAPIReqeust(text: String, page: Int = 1) {
         var url: String = ""
@@ -190,12 +211,14 @@ private extension SearchViewController {
         ApiRequest.shared.request(url: url, method: .get) { [weak self] (success, response: BookSearch?) in
             guard let self = self else { return }
             if success {
-                print(response)
                 if let books = response?.books {
-                    if page == 1 {
+                    if page == 1 { //New keyword search
+                        if books.count == 0 {
+                            self.noResultLabel.text = "0 items found.\nTry another search word"
+                        }
                         self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
                         self.viewModel.data.value = books
-                    } else {
+                    } else { //scroll feed
                         var copy = self.viewModel.data.value
                         books.enumerated().forEach({ (index, item) in
                             if !(self.viewModel.data.value?.contains(where: { (data) -> Bool in
