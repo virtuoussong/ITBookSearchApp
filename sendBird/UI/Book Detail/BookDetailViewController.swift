@@ -341,22 +341,6 @@ private extension BookDetailViewController {
     }
     
     func scrollViewToMakeKeyboardVisible() {
-//        var startPosition = noteTextView.beginningOfDocument
-//        var endPosition = noteTextView.endOfDocument
-//        let selectedRange = noteTextView.selectedTextRange
-//
-//        let newposition = noteTextView.offset(from: noteTextView.beginningOfDocument, to: selectedRange!.start)
-//        print("newposition", newposition)
-//
-//        let keyboardY = self.view.frame.height - keyBoardHeight
-//        if let element = noteTextView.superview?.convert((noteTextView.frame.origin), to: view) {
-//            if keyboardY < (element.y + CGFloat(newposition) + 200) {
-//                let scrollAmount = Int(keyboardY) + 200 + newposition
-//                let scrollPont = CGPoint(x: 0, y: scrollAmount)
-//                self.scrollView.setContentOffset(scrollPont, animated: true)
-//
-//            }
-//        }
         DispatchQueue.main.async {
             if let range = self.noteTextView.selectedTextRange?.start {
                 let cursurPosition = self.noteTextView.caretRect(for: range).origin.y
@@ -372,28 +356,6 @@ private extension BookDetailViewController {
                 }
             }
         }
-        
-        
-//        guard let scrollView = findParentScrollView(of: noteTextView),
-//              let range = noteTextView.selectedTextRange else {
-//            return
-//        }
-//
-//        let cursorRect = noteTextView.caretRect(for: range.start)
-//        var rectToMakeVisible = noteTextView.convert(cursorRect, to: scrollView)
-//
-//        rectToMakeVisible.origin.y -= cursorRect.height
-//        rectToMakeVisible.size.height *= 3
-//
-//        if #available(iOS 10.0, *) {
-//            let animator = UIViewPropertyAnimator(duration: 0.1, curve: .linear) {
-//                scrollView.scrollRectToVisible(rectToMakeVisible, animated: false)
-//            }
-//            animator.startAnimation()
-//        } else {
-//            // Fallback on earlier versions
-//        }
-//
     }
 }
 
@@ -459,10 +421,5 @@ extension BookDetailViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         updateScrollViewContentSize()
     }
-    
-//    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-//        scrollViewToMakeKeyboardVisible()
-//        return true
-//    }
 }
 
