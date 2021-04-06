@@ -8,17 +8,17 @@
 import Foundation
 import UIKit
 
-class BookDetailViewController: UIViewController {
+final class BookDetailViewController: UIViewController {
     
     //MARK: - UI Components
-    lazy var scrollView: UIScrollView = {
+    private lazy var scrollView: UIScrollView = {
         let s = UIScrollView()
         s.delegate = self
         s.translatesAutoresizingMaskIntoConstraints = false
         return s
     }()
     
-    let stackView: UIStackView = {
+    private let stackView: UIStackView = {
         let s = UIStackView()
         s.axis = .vertical
         s.spacing = 8
@@ -26,14 +26,14 @@ class BookDetailViewController: UIViewController {
         return s
     }()
     
-    let bookImageView: UIImageView = {
+    private let bookImageView: UIImageView = {
         let i = UIImageView()
         i.contentMode = .scaleAspectFit
         i.translatesAutoresizingMaskIntoConstraints = false
         return i
     }()
     
-    let bookTitleLabel: UILabel = {
+    private let bookTitleLabel: UILabel = {
         let i = UILabel()
         i.numberOfLines = 0
         i.font = UIFont.boldSystemFont(ofSize: 20)
@@ -41,7 +41,7 @@ class BookDetailViewController: UIViewController {
         return i
     }()
     
-    let subTitleLabel: UILabel = {
+    private let subTitleLabel: UILabel = {
         let i = UILabel()
         i.numberOfLines = 0
         i.font = UIFont.systemFont(ofSize: 14)
@@ -49,63 +49,63 @@ class BookDetailViewController: UIViewController {
         return i
     }()
     
-    let priceLabel: UILabel = {
+    private let priceLabel: UILabel = {
         let i = UILabel()
         i.font = UIFont.systemFont(ofSize: 14)
         i.textColor = .gray
         return i
     }()
     
-    let languageLabel: UILabel = {
+    private let languageLabel: UILabel = {
         let i = UILabel()
         i.font = UIFont.systemFont(ofSize: 14)
         i.textColor = .gray
         return i
     }()
     
-    let pageLabel: UILabel = {
+    private let pageLabel: UILabel = {
         let i = UILabel()
         i.font = UIFont.systemFont(ofSize: 14)
         i.textColor = .gray
         return i
     }()
     
-    let publisherLabel: UILabel = {
+    private let publisherLabel: UILabel = {
         let i = UILabel()
         i.font = UIFont.systemFont(ofSize: 14)
         i.textColor = .gray
         return i
     }()
     
-    let ratingLabel: UILabel = {
+    private let ratingLabel: UILabel = {
         let i = UILabel()
         i.font = UIFont.systemFont(ofSize: 14)
         i.textColor = .gray
         return i
     }()
     
-    let yearLabel: UILabel = {
+    private let yearLabel: UILabel = {
         let i = UILabel()
         i.font = UIFont.systemFont(ofSize: 14)
         i.textColor = .gray
         return i
     }()
     
-    let isbn10Label: UILabel = {
+    private let isbn10Label: UILabel = {
         let i = UILabel()
         i.font = UIFont.systemFont(ofSize: 14)
         i.textColor = .gray
         return i
     }()
     
-    let isbn13Label: UILabel = {
+    private let isbn13Label: UILabel = {
         let i = UILabel()
         i.font = UIFont.systemFont(ofSize: 14)
         i.textColor = .gray
         return i
     }()
     
-    let descriptionLabel: UILabel = {
+    private let descriptionLabel: UILabel = {
         let i = UILabel()
         i.numberOfLines = 0
         i.font = UIFont.systemFont(ofSize: 18)
@@ -113,7 +113,7 @@ class BookDetailViewController: UIViewController {
         return i
     }()
     
-    lazy var purchButton: UIButton = {
+    private lazy var purchButton: UIButton = {
         let p = UIButton()
         p.addTarget(self, action: #selector(didTapPurchaseButton), for: .touchUpInside)
         p.setTitle("Purchase", for: .normal)
@@ -125,7 +125,7 @@ class BookDetailViewController: UIViewController {
         return p
     }()
     
-    let noteTitleLabel: UILabel = {
+    private let noteTitleLabel: UILabel = {
         let i = UILabel()
         i.text = "Note"
         i.numberOfLines = 0
@@ -134,7 +134,7 @@ class BookDetailViewController: UIViewController {
         return i
     }()
     
-    lazy var noteTextView: UITextView = {
+    private lazy var noteTextView: UITextView = {
         let t = UITextView()
         t.textColor = .darkGray
         t.font = UIFont.systemFont(ofSize: 16)
@@ -206,11 +206,11 @@ class BookDetailViewController: UIViewController {
         }
     }
     
-    var scrollPosition: CGPoint = CGPoint(x: 0, y: 0)
+    private var scrollPosition: CGPoint = CGPoint(x: 0, y: 0)
     
-    var keyBoardHeight: CGFloat = 0
+    private var keyBoardHeight: CGFloat = 0
         
-    lazy var noteTextViewHeight: NSLayoutConstraint = {
+    private lazy var noteTextViewHeight: NSLayoutConstraint = {
         let n = noteTextView.heightAnchor.constraint(equalToConstant: 100)
         return n
     }()

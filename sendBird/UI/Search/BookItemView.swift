@@ -8,12 +8,12 @@
 import Foundation
 import UIKit
 
-class BookItemView: UICollectionViewCell {
+final class BookItemView: UICollectionViewCell {
     
     //MARK: - UI Components
     static let identifier = "BookItemView"
     
-    let bookImageView: UIImageView = {
+    private let bookImageView: UIImageView = {
         let b = UIImageView()
         b.contentMode = .scaleAspectFill
         b.translatesAutoresizingMaskIntoConstraints = false
@@ -22,7 +22,7 @@ class BookItemView: UICollectionViewCell {
         return b
     }()
     
-    let stackView: UIStackView = {
+    private let stackView: UIStackView = {
         let s = UIStackView()
         s.axis = .vertical
         s.spacing = 8
@@ -30,7 +30,7 @@ class BookItemView: UICollectionViewCell {
         return s
     }()
     
-    let bookNameLabel: UILabel = {
+    private let bookNameLabel: UILabel = {
         let b = UILabel()
         b.font = UIFont.boldSystemFont(ofSize: 18)
         b.textColor = .black
@@ -39,7 +39,7 @@ class BookItemView: UICollectionViewCell {
         return b
     }()
     
-    let subTitleLabel: UILabel = {
+    private let subTitleLabel: UILabel = {
         let b = UILabel()
         b.numberOfLines = 0
         b.font = UIFont.systemFont(ofSize: 18, weight: .regular)
@@ -48,7 +48,7 @@ class BookItemView: UICollectionViewCell {
         return b
     }()
     
-    let subInfoStackView: UIStackView = {
+    private let subInfoStackView: UIStackView = {
         let s = UIStackView()
         s.axis = .horizontal
         s.distribution = .fill
@@ -56,7 +56,7 @@ class BookItemView: UICollectionViewCell {
         return s
     }()
     
-    let priceLabel: UILabel = {
+    private let priceLabel: UILabel = {
         let b = UILabel()
         b.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         b.textColor = .darkGray
@@ -64,7 +64,7 @@ class BookItemView: UICollectionViewCell {
         return b
     }()
     
-    let isbn13Label: UILabel = {
+    private let isbn13Label: UILabel = {
         let b = UILabel()
         b.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         b.textColor = .darkGray
@@ -72,7 +72,7 @@ class BookItemView: UICollectionViewCell {
         return b
     }()
     
-    let grayLine: UIView = {
+    private let grayLine: UIView = {
         let g = UIView()
         g.backgroundColor = .lightGray
         g.translatesAutoresizingMaskIntoConstraints = false
@@ -83,26 +83,26 @@ class BookItemView: UICollectionViewCell {
     var dataSet: Book? {
         didSet {
             if let imageUrl = dataSet?.image {
-                bookImageView.image = nil
-                configureImageWith(urlString: imageUrl)
+                self.bookImageView.image = nil
+                self.configureImageWith(urlString: imageUrl)
             }
             
             if let bookName = dataSet?.title {
-                bookNameLabel.text = bookName
+                self.bookNameLabel.text = bookName
             }
             
             if let subTitle = dataSet?.subtitle {
-                subTitleLabel.text = subTitle
+                self.subTitleLabel.text = subTitle
             } else {
-                subTitleLabel.isHidden = true
+                self.subTitleLabel.isHidden = true
             }
             
             if let isbn13 = dataSet?.isbn13 {
-                isbn13Label.text = isbn13
+                self.isbn13Label.text = isbn13
             }
             
             if let price = dataSet?.price {
-                priceLabel.text = price
+                self.priceLabel.text = price
             }
         }
     }
@@ -111,8 +111,8 @@ class BookItemView: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubViews()
-        setupView()
+        self.addSubViews()
+        self.setupView()
     }
     
     required init?(coder: NSCoder) {
@@ -139,28 +139,28 @@ private extension BookItemView {
     
     func setupView() {
         NSLayoutConstraint.activate([
-            bookImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            bookImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
-            bookImageView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
-            bookImageView.heightAnchor.constraint(equalToConstant: frame.size.width - 32),
+            self.bookImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            self.bookImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+            self.bookImageView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
+            self.bookImageView.heightAnchor.constraint(equalToConstant: frame.size.width - 32),
             
-            stackView.topAnchor.constraint(equalTo: bookImageView.bottomAnchor, constant: 8),
-            stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
-            stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
+            self.stackView.topAnchor.constraint(equalTo: bookImageView.bottomAnchor, constant: 8),
+            self.stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+            self.stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
             
-            subInfoStackView.widthAnchor.constraint(equalToConstant: frame.size.width - 32),
-            subInfoStackView.heightAnchor.constraint(equalToConstant: 16),
+            self.subInfoStackView.widthAnchor.constraint(equalToConstant: frame.size.width - 32),
+            self.subInfoStackView.heightAnchor.constraint(equalToConstant: 16),
             
-            grayLine.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            grayLine.heightAnchor.constraint(equalToConstant: 1),
-            grayLine.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
-            grayLine.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
+            self.grayLine.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            self.grayLine.heightAnchor.constraint(equalToConstant: 1),
+            self.grayLine.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+            self.grayLine.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
         ])
     }
     
     func configureImageWith(urlString: String) {
-        if task == nil {
-            task = bookImageView.loadImageFromUrl(urlString: urlString)
+        if self.task == nil {
+            self.task = self.bookImageView.loadImageFromUrl(urlString: urlString)
         }
     }
 

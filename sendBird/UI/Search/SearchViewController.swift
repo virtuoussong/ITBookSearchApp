@@ -8,10 +8,10 @@
 import Foundation
 import UIKit
 
-class SearchViewController: UIViewController {
+final class SearchViewController: UIViewController {
     
     //MARK: - UI Component
-    lazy var searchBar: UISearchBar = {
+    private lazy var searchBar: UISearchBar = {
         let s = UISearchBar()
         s.placeholder = "Search by keyword"
         s.delegate = self
@@ -21,7 +21,7 @@ class SearchViewController: UIViewController {
         return s
     }()
     
-    lazy var collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let c = UICollectionView(frame: .zero, collectionViewLayout: layout)
         c.register(BookItemView.self, forCellWithReuseIdentifier: "BookItemView")
@@ -33,7 +33,7 @@ class SearchViewController: UIViewController {
         return c
     }()
     
-    let noResultLabel: UILabel = {
+    private let noResultLabel: UILabel = {
         let n = UILabel()
         n.text = "Search books by keyword"
         n.numberOfLines = 0
@@ -44,10 +44,10 @@ class SearchViewController: UIViewController {
     }()
     
     //MARK: - Properties
-    var viewModel = BookSearchViewModel()
-    var currentPage = "1"
-    var searchedWord = ""
-    var cellHeightCache: [String: CGSize] = [:]
+    private var viewModel = BookSearchViewModel()
+    private var currentPage = "1"
+    private var searchedWord = ""
+    private var cellHeightCache: [String: CGSize] = [:]
 }
 
 //MARK: - Setup Views
