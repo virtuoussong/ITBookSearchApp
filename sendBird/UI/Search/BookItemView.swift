@@ -126,7 +126,7 @@ class BookItemView: UICollectionViewCell {
     
     func setupView() {
         NSLayoutConstraint.activate([
-            bookImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            bookImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             bookImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
             bookImageView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
             bookImageView.heightAnchor.constraint(equalToConstant: frame.size.width - 32),

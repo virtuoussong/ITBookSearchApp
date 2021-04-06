@@ -122,12 +122,13 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
         }
         
         let width = view.frame.width - 32
+        let imageHeight = width + 8
         let titleHeight = TextHeight.textHeightForView(text: data?.title ?? "", font: UIFont.boldSystemFont(ofSize: 18), width: width) + 8
         let subTitleHeight = data?.title == nil ? 0 : TextHeight.textHeightForView(text: data?.subtitle ?? "", font: UIFont.boldSystemFont(ofSize: 18), width: width) + 8
         let subInfo: CGFloat = 24
         let bottomLine: CGFloat = 24
         
-        let total = width + titleHeight + subTitleHeight + subInfo + bottomLine
+        let total = imageHeight + titleHeight + subTitleHeight + subInfo + bottomLine
         
         let size = CGSize(width: view.frame.width, height: total)
         if let id = data?.isbn13 {

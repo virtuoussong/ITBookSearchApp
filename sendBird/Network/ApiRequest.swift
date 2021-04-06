@@ -34,9 +34,9 @@ class ApiRequest {
             return
         }
 
-        guard let urlString = URL(string: url) else { return }
-        
-        var request = URLRequest(url: urlString)
+        guard let remoteURL = URL(string: url) else { return }
+      
+        var request = URLRequest(url: remoteURL)
         request.httpMethod = method.rawValue
         if let parameters = params {
             request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
@@ -49,7 +49,8 @@ class ApiRequest {
             
             guard let httpResponse = response as? HTTPURLResponse else { return }
             
-            if httpResponse.statusCode == 200 {
+            switch httpResponse.statusCode {
+            case 200..<300:
                 do {
                     let json = try JSONSerialization.jsonObject(with: data!, options: [])
                     print("json: \(json)")
@@ -64,9 +65,34 @@ class ApiRequest {
                     print("error", error)
                     completion(false, nil)
                 }
-            } else {
+            case 400:
+                print("error", error)
                 completion(false, nil)
+            case 500:
+                print("error", error)
+                completion(false, nil)
+            default:
+                break
             }
+            
+//            if httpResponse.statusCode == 200 {
+//                do {
+//                    let json = try JSONSerialization.jsonObject(with: data!, options: [])
+//                    print("json: \(json)")
+//
+//                    let jsonDecode = try JSONDecoder().decode(T.self, from: data!)
+//                    self.cacheData.setObject(ApiCache(data: jsonDecode), forKey: url as NSString)
+//                    DispatchQueue.main.async {
+//                        completion(true, jsonDecode)
+//                    }
+//
+//                } catch {
+//                    print("error", error)
+//                    completion(false, nil)
+//                }
+//            } else {
+//                completion(false, nil)
+//            }
         })
         
         task.resume()
