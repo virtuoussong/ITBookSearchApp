@@ -11,8 +11,9 @@ import UIKit
 class BookDetailViewController: UIViewController {
     
     //MARK: - UI Components
-    let scrollView: UIScrollView = {
+    lazy var scrollView: UIScrollView = {
         let s = UIScrollView()
+        s.delegate = self
         s.translatesAutoresizingMaskIntoConstraints = false
         return s
     }()
@@ -124,13 +125,27 @@ class BookDetailViewController: UIViewController {
         return p
     }()
     
-    @objc private func didTapPurchaseButton() {
-        if let urlString = dataSet?.url {
-            if let url = URL(string: urlString) {
-                UIApplication.shared.openURL(url)
-            }
-        }
-    }
+    let noteTitleLabel: UILabel = {
+        let i = UILabel()
+        i.text = "Note"
+        i.numberOfLines = 0
+        i.font = UIFont.systemFont(ofSize: 18)
+        i.textColor = .darkGray
+        return i
+    }()
+    
+    lazy var noteTextView: UITextView = {
+        let t = UITextView()
+        t.textColor = .darkGray
+        t.font = UIFont.systemFont(ofSize: 16)
+        t.layer.borderWidth = 1
+        t.layer.borderColor = UIColor.lightGray.cgColor
+        t.layer.cornerRadius = 8
+        t.backgroundColor = .white
+        t.delegate = self
+        t.translatesAutoresizingMaskIntoConstraints = false
+        return t
+    }()
     
     //MARK: - Properties
     var dataSet: BookDetail? {
@@ -182,12 +197,24 @@ class BookDetailViewController: UIViewController {
             
             if let isbn13 = dataSet?.isbn13 {
                 isbn13Label.text = "isbn13: \(isbn13)"
+                if let noteSaved = UserDefaults.standard.value(forKey: isbn13) as? String {
+                    noteTextView.text = noteSaved
+                    updateTextViewHeight()
+                }
             }
-            
-            setupScrollViewContents()
+            updateScrollViewContentSize()
         }
     }
     
+    var scrollPosition: CGPoint = CGPoint(x: 0, y: 0)
+    
+    var keyBoardHeight: CGFloat = 0
+    
+    lazy var noteTextViewHeight: NSLayoutConstraint = {
+        let n = noteTextView.heightAnchor.constraint(equalToConstant: 100)
+        return n
+    }()
+        
     convenience init(id: String) {
         self.init()
         getBookDetailData(id: id)
@@ -195,6 +222,7 @@ class BookDetailViewController: UIViewController {
     
 }
 
+//MARK: - life cycle
 extension BookDetailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -202,44 +230,59 @@ extension BookDetailViewController {
         addSubViews()
         makeConstraints()
         makeScrollView()
+        setNotification()
+        addDoneButtonOnKeyboard()
     }
 }
 
-
+//MARK: - UI Setup
 private extension BookDetailViewController {
     func addSubViews() {
         [scrollView, purchButton].forEach({ view.addSubview($0) })
         scrollView.addSubview(stackView)
-        [bookImageView, bookTitleLabel, subTitleLabel, priceLabel, ratingLabel, languageLabel, descriptionLabel, pageLabel, publisherLabel, yearLabel, isbn10Label, isbn13Label].forEach({ stackView.addArrangedSubview($0) })
+        [bookImageView, bookTitleLabel, subTitleLabel, priceLabel, ratingLabel, languageLabel, descriptionLabel, pageLabel, publisherLabel, yearLabel, isbn10Label, isbn13Label, noteTitleLabel, noteTextView].forEach({ stackView.addArrangedSubview($0) })
+        if #available(iOS 11.0, *) {
+            stackView.setCustomSpacing(16, after: isbn13Label)
+        } else {
+            let space = UIView()
+            space.translatesAutoresizingMaskIntoConstraints = false
+            space.heightAnchor.constraint(equalToConstant: 16).isActive = true
+            stackView.addArrangedSubview(space)
+        }
     }
     
     func makeScrollView() {
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            scrollView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-    }
-    
-    func setupScrollViewContents() {
-        stackView.layoutIfNeeded()
-        scrollView.contentSize = CGSize(width: view.frame.width, height: stackView.frame.height)
-        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 98, right: 0)
-    }
-    
-    func makeConstraints() {
         let viewGuide: UILayoutGuide
         if #available(iOS 11.0, *) {
             viewGuide = view.safeAreaLayoutGuide
         } else {
             viewGuide = view.readableContentGuide
         }
-
+        
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: viewGuide.topAnchor),
+            scrollView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            scrollView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: viewGuide.bottomAnchor)
+        ])
+    }
+    
+    func updateScrollViewContentSize() {
+        
+        DispatchQueue.main.async {
+            self.stackView.layoutIfNeeded()
+            self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.stackView.frame.height)
+            self.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 98, right: 0)
+        }
+    }
+    
+    func makeConstraints() {
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 24),
             stackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -24),
+            
+            noteTextViewHeight,
             
             purchButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -24),
             purchButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 24),
@@ -251,29 +294,115 @@ private extension BookDetailViewController {
     func getBookDetailData(id: String) {
         ApiRequest.shared.request(url: ApiEndPoint.getBookDetail(id).address, method: .get) { [weak self] (isSuccessful, response: BookDetail?) in
             if let data = response {
-                DispatchQueue.main.async {
-                    self?.dataSet = data
-                }
+                self?.dataSet = data
+            }
+        }
+    }
+    
+    func addDoneButtonOnKeyboard(){
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+        doneToolbar.barStyle = .default
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(self.doneButtonAction))
+        
+        let items = [flexSpace, done]
+        doneToolbar.items = items
+        doneToolbar.sizeToFit()
+        
+        noteTextView.inputAccessoryView = doneToolbar
+    }
+    
+    func updateTextViewHeight() {
+        let size = CGSize(width: view.frame.width - 48, height: .infinity)
+        let estimatedSize = noteTextView.sizeThatFits(size)
+        print(estimatedSize.height)
+        var height: CGFloat = 0
+        if estimatedSize.height > 100 {
+            height = estimatedSize.height
+        }
+        noteTextView.constraints.forEach { (constraint) in
+            if constraint.firstAttribute == .height {
+                constraint.constant = height
+            }
+        }
+    }
+    
+    func scrollViewToMakeKeyboardVisible() {
+        let cursurPosition = noteTextView.caretRect(for: noteTextView.selectedTextRange!.start).origin.y
+        let keyboardY = self.view.frame.height - keyBoardHeight
+        if let element = noteTextView.superview?.convert((noteTextView.frame.origin), to: view) {
+            if keyboardY < (element.y + cursurPosition + 200) {
+                let scrollAmount = keyboardY + 200 + cursurPosition
+                let scrollPont = CGPoint(x: 0, y: scrollAmount)
+                self.scrollView.setContentOffset(scrollPont, animated: true)
+                
             }
         }
     }
 }
 
-struct BookDetail: Codable {
-    let authors: String?
-    let desc: String?
-    let error: String?
-    let image: String?
-    let isbn10: String?
-    let isbn13: String?
-    let language: String?
-    let page: Int?
-    let price: String?
-    let publisher: String?
-    let rating: String?
-    let subtitle: String?
-    let title: String?
-    let url: String?
-    let year: String?
+//MARK: - Keyboard Notification
+private extension BookDetailViewController {
+    func setNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(keyboardShowNotification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardwillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillShow(keyboardShowNotification notification: Notification) {
+        
+        scrollPosition = scrollView.contentOffset
+        
+        guard let userInfo = notification.userInfo else { return }
+        guard let keyboardRectangle = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return  }
+        keyBoardHeight = keyboardRectangle.height
+        scrollViewToMakeKeyboardVisible()
+    }
+    
+    @objc func keyboardwillHide(keyboardShowNotification notification: Notification) {
+        self.scrollView.setContentOffset(scrollPosition, animated: true)
+    }
+}
+
+//MARK: - Action
+private extension BookDetailViewController {
+    @objc private func didTapPurchaseButton() {
+        if let urlString = dataSet?.url {
+            if let url = URL(string: urlString) {
+                UIApplication.shared.openURL(url)
+            }
+        }
+    }
+    
+    @objc func doneButtonAction(){
+        if let id = dataSet?.isbn13, let text = noteTextView.text {
+            UserDefaults.standard.setValue(text, forKey: id)
+        }
+        noteTextView.resignFirstResponder()
+    }
+    
+    @objc func endEdit() {
+        noteTextView.resignFirstResponder()
+    }
+}
+
+//MARK: - ScrollView Delegate
+extension BookDetailViewController: UIScrollViewDelegate {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        view.endEditing(true)
+    }
+}
+
+//MARK: - TextView Delegate
+extension BookDetailViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        scrollViewToMakeKeyboardVisible()
+        updateTextViewHeight()
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        updateScrollViewContentSize()
+    }
 }
 

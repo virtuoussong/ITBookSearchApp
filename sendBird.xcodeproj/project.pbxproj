@@ -25,6 +25,7 @@
 		DE97F946261B0C7000599A31 /* BookDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F945261B0C6E00599A31 /* BookDetailViewController.swift */; };
 		DE97F951261BE48100599A31 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F950261BE47F00599A31 /* Observable.swift */; };
 		DE97F957261BEDFF00599A31 /* TextHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F956261BEDFF00599A31 /* TextHeight.swift */; };
+		DE97F965261C2E8300599A31 /* BookDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97F964261C2E8100599A31 /* BookDetail.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		DE97F945261B0C6E00599A31 /* BookDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailViewController.swift; sourceTree = "<group>"; };
 		DE97F950261BE47F00599A31 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		DE97F956261BEDFF00599A31 /* TextHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHeight.swift; sourceTree = "<group>"; };
+		DE97F964261C2E8100599A31 /* BookDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetail.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				DE97F928261A09FC00599A31 /* Book.swift */,
+				DE97F964261C2E8100599A31 /* BookDetail.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -357,6 +360,7 @@
 				DE97F934261A16C000599A31 /* InfiniteScrollable.swift in Sources */,
 				DE97F9182619E7D400599A31 /* BookItemView.swift in Sources */,
 				DE97F951261BE48100599A31 /* Observable.swift in Sources */,
+				DE97F965261C2E8300599A31 /* BookDetail.swift in Sources */,
 				DE97F946261B0C7000599A31 /* BookDetailViewController.swift in Sources */,
 				DE97F957261BEDFF00599A31 /* TextHeight.swift in Sources */,
 				DE97F9232619F43E00599A31 /* UIImageView+Extention.swift in Sources */,
