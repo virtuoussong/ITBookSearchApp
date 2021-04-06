@@ -27,7 +27,10 @@ class ApiRequest {
     func request<T: Codable>(url: String, method: ApiMethod, params: [Dictionary<String, String>]? = nil, completion: @escaping (Bool, T?) -> Void) {
         
         if let searchCache = cacheData.object(forKey: url as NSString) as? ApiCache {
-            completion(true, searchCache.cacheData as! T)
+            DispatchQueue.main.async {
+                completion(true, searchCache.cacheData as! T)
+            }
+            
             return
         }
 
@@ -53,7 +56,10 @@ class ApiRequest {
                     
                     let jsonDecode = try JSONDecoder().decode(T.self, from: data!)
                     self.cacheData.setObject(ApiCache(data: jsonDecode), forKey: url as NSString)
-                    completion(true, jsonDecode)
+                    DispatchQueue.main.async {
+                        completion(true, jsonDecode)
+                    }
+                    
                 } catch {
                     print("error", error)
                     completion(false, nil)

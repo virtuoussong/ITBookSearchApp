@@ -9,6 +9,6 @@ import Foundation
 
 class BookSearchViewModel {
     
-    var data: [Book] = []
+    var data: Observable<[Book]?> = Observable(nil)
     
 }

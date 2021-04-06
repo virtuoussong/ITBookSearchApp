@@ -32,11 +32,28 @@ class BookItemView: UICollectionViewCell {
     
     let bookNameLabel: UILabel = {
         let b = UILabel()
-        b.font = UIFont.boldSystemFont(ofSize: 16)
+        b.font = UIFont.boldSystemFont(ofSize: 18)
         b.textColor = .black
-        b.numberOfLines = 2
+        b.numberOfLines = 0
         b.translatesAutoresizingMaskIntoConstraints = false
         return b
+    }()
+    
+    let subTitleLabel: UILabel = {
+        let b = UILabel()
+        b.numberOfLines = 0
+        b.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        b.textColor = .darkGray
+        b.translatesAutoresizingMaskIntoConstraints = false
+        return b
+    }()
+    
+    let subInfoStackView: UIStackView = {
+        let s = UIStackView()
+        s.axis = .horizontal
+        s.distribution = .fill
+        s.translatesAutoresizingMaskIntoConstraints = false
+        return s
     }()
     
     let priceLabel: UILabel = {
@@ -47,16 +64,42 @@ class BookItemView: UICollectionViewCell {
         return b
     }()
     
+    let isbn13Label: UILabel = {
+        let b = UILabel()
+        b.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        b.textColor = .darkGray
+        b.translatesAutoresizingMaskIntoConstraints = false
+        return b
+    }()
+    
+    let grayLine: UIView = {
+        let g = UIView()
+        g.backgroundColor = .lightGray
+        g.translatesAutoresizingMaskIntoConstraints = false
+        return g
+    }()
+    
     //MARK: - Properties
     var dataSet: Book? {
         didSet {
+
+            if let imageUrl = dataSet?.image {
+                bookImageView.image = nil
+                bookImageView.loadImageFromUrl(urlString: imageUrl)
+            }
+            
             if let bookName = dataSet?.title {
                 bookNameLabel.text = bookName
             }
             
-            if let imageUrl = dataSet?.image {
-                bookImageView.image = nil
-                bookImageView.loadImageFromUrl(urlString: imageUrl)
+            if let subTitle = dataSet?.subtitle {
+                subTitleLabel.text = subTitle
+            } else {
+                subTitleLabel.isHidden = true
+            }
+            
+            if let isbn13 = dataSet?.isbn13 {
+                isbn13Label.text = isbn13
             }
             
             if let price = dataSet?.price {
@@ -76,23 +119,34 @@ class BookItemView: UICollectionViewCell {
     }
     
     func addSubViews() {
-        [bookImageView, stackView].forEach({ contentView.addSubview($0) })
-        [bookNameLabel, priceLabel].forEach({ stackView.addArrangedSubview($0) })
+        [bookImageView, stackView, grayLine].forEach({ contentView.addSubview($0) })
+        [bookNameLabel, subTitleLabel, subInfoStackView].forEach({ stackView.addArrangedSubview($0) })
+        [priceLabel, isbn13Label].forEach({ subInfoStackView.addArrangedSubview($0) })
     }
     
     func setupView() {
         NSLayoutConstraint.activate([
             bookImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             bookImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
-            bookImageView.widthAnchor.constraint(equalToConstant: 100),
-            bookImageView.heightAnchor.constraint(equalToConstant: 100),
+            bookImageView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
+            bookImageView.heightAnchor.constraint(equalToConstant: frame.size.width - 32),
             
-            stackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            stackView.leftAnchor.constraint(equalTo: bookImageView.rightAnchor, constant: 8),
-            stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -8),
+            stackView.topAnchor.constraint(equalTo: bookImageView.bottomAnchor),
+            stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+            stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
+            
+            subInfoStackView.widthAnchor.constraint(equalToConstant: frame.size.width - 32),
+            subInfoStackView.heightAnchor.constraint(equalToConstant: 16),
+            
+            grayLine.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            grayLine.heightAnchor.constraint(equalToConstant: 1),
+            grayLine.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+            grayLine.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
         ])
     }
+    
 
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
