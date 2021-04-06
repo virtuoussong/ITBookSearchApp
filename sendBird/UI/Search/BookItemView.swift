@@ -131,7 +131,7 @@ class BookItemView: UICollectionViewCell {
             bookImageView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
             bookImageView.heightAnchor.constraint(equalToConstant: frame.size.width - 32),
             
-            stackView.topAnchor.constraint(equalTo: bookImageView.bottomAnchor),
+            stackView.topAnchor.constraint(equalTo: bookImageView.bottomAnchor, constant: 8),
             stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
             stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
             

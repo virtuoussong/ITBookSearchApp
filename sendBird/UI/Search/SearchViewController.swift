@@ -39,7 +39,7 @@ class SearchViewController: UIViewController {
     var viewModel = BookSearchViewModel()
     var currentPage = "1"
     var searchedWord = ""
-
+    var cellHeightCache: [String: CGSize] = [:]
 }
 
 private extension SearchViewController {
@@ -117,8 +117,12 @@ extension SearchViewController: UICollectionViewDataSource {
 extension SearchViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let data = viewModel.data.value?[indexPath.item]
+        if let id = data?.isbn13, let size = cellHeightCache[id] {
+            return size
+        }
+        
         let width = view.frame.width - 32
-        let titleHeight = TextHeight.textHeightForView(text: data?.title ?? "", font: UIFont.boldSystemFont(ofSize: 18), width: width)
+        let titleHeight = TextHeight.textHeightForView(text: data?.title ?? "", font: UIFont.boldSystemFont(ofSize: 18), width: width) + 8
         let subTitleHeight = data?.title == nil ? 0 : TextHeight.textHeightForView(text: data?.subtitle ?? "", font: UIFont.boldSystemFont(ofSize: 18), width: width) + 8
         let subInfo: CGFloat = 24
         let bottomLine: CGFloat = 24
@@ -126,8 +130,18 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
         let total = width + titleHeight + subTitleHeight + subInfo + bottomLine
         
         let size = CGSize(width: view.frame.width, height: total)
+        if let id = data?.isbn13 {
+            cellHeightCache[id] = size
+        }
         
         return size
+    }
+}
+
+extension SearchViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.searchBar.resignFirstResponder()
+        self.searchBar.setShowsCancelButton(false, animated: true)
     }
 }
 
@@ -149,7 +163,7 @@ extension SearchViewController: UISearchBarDelegate {
             self.searchBookAPIReqeust(text: text, page: 1)
         }
         self.searchedWord = text
-        self.searchBookAPIReqeust(text: text)
+        
         self.searchBar.resignFirstResponder()
         self.searchBar.setShowsCancelButton(false, animated: true)
     }
@@ -178,6 +192,7 @@ private extension SearchViewController {
                 print(response)
                 if let books = response?.books {
                     if page == 1 {
+                        self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
                         self.viewModel.data.value = books
                     } else {
                         var copy = self.viewModel.data.value
