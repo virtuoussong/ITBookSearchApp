@@ -131,6 +131,7 @@ final class BookDetailViewController: UIViewController {
         i.numberOfLines = 0
         i.font = UIFont.systemFont(ofSize: 18)
         i.textColor = .darkGray
+        i.isHidden = true
         return i
     }()
     
@@ -143,6 +144,7 @@ final class BookDetailViewController: UIViewController {
         t.layer.cornerRadius = 8
         t.backgroundColor = .white
         t.delegate = self
+        t.isHidden = true
         t.translatesAutoresizingMaskIntoConstraints = false
         return t
     }()
@@ -202,6 +204,10 @@ final class BookDetailViewController: UIViewController {
                     self.updateTextViewHeight()
                 }
             }
+            
+            self.noteTitleLabel.isHidden = false
+            self.noteTextView.isHidden = false
+            
             self.updateScrollViewContentSize()
         }
     }
