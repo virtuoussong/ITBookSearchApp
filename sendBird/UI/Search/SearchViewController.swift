@@ -237,13 +237,11 @@ extension SearchViewController: UISearchBarDelegate {
 private extension SearchViewController {
     func searchBooksByKeyword(text: String, page: Int = 1) {
         guard !isAllResultsFetched() else { return }
+        guard Int(currentPage) == 1 || Int(currentPage) != page else { return}
         
-        if Int(currentPage) != 1 && Int(currentPage) == page {
-            self.searchDataFetchSession?.cancel()
-            self.searchDataFetchSession = nil
-        } else {
-            self.apiSearchRequestForBooks(text: text, page: page)
-        }
+        self.searchDataFetchSession?.cancel()
+        self.searchDataFetchSession = nil
+        self.apiSearchRequestForBooks(text: text, page: page)
     }
     
     func apiSearchRequestForBooks(text: String, page: Int = 1) {
