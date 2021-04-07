@@ -50,7 +50,7 @@ final class SearchViewController: UIViewController {
     private var searchedWord = ""
     private var cellHeightCache: [String: CGSize] = [:]
     private var searchDataFetchSession: URLSessionDataTask?
-    
+    private var availableBookCount: Int?
     //MARK: - Life cycle
     override func viewDidLoad() {
         self.view.backgroundColor = .white
@@ -104,10 +104,25 @@ private extension SearchViewController {
 
 //MARK: - Actions
 private extension SearchViewController {
-    func updateLoadingFooterCell(isLoading: Bool) {
+    func updateLoadingFooterCell(loading status: LoadingFooterCell.Status) {
         if let footerView = collectionView.subviews.first(where: {$0 is LoadingFooterCell}) as? LoadingFooterCell {
-            footerView.isLoading = isLoading
+            footerView.loadingStatus = status
         }
+    }
+    
+    func isAllResultsFetched() -> Bool {
+        guard availableBookCount != nil else { return false }
+        if self.viewModel.data.value?.count == self.availableBookCount {
+            self.updateLoadingFooterCell(loading: .noMore)
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func setNewKeyWordSearch() {
+        self.currentPage = "1"
+        self.availableBookCount = nil
     }
 }
 
@@ -201,6 +216,7 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text else { return }
         if text != searchedWord {
+            self.setNewKeyWordSearch()
             self.searchBooksByKeyword(text: text, page: 1)
         }
         self.searchedWord = text
@@ -220,14 +236,18 @@ extension SearchViewController: UISearchBarDelegate {
 //MARK: - API Call
 private extension SearchViewController {
     func searchBooksByKeyword(text: String, page: Int = 1) {
-        self.searchDataFetchSession?.cancel()
-        self.searchDataFetchSession = nil
-        self.apiSearchRequestForBooks(text: text, page: page)
+        guard !isAllResultsFetched() else { return }
+        
+        if Int(currentPage) != 1 && Int(currentPage) == page {
+            self.searchDataFetchSession?.cancel()
+            self.searchDataFetchSession = nil
+        } else {
+            self.apiSearchRequestForBooks(text: text, page: page)
+        }
     }
     
     func apiSearchRequestForBooks(text: String, page: Int = 1) {
-        guard self.searchDataFetchSession == nil else { return }
-        self.updateLoadingFooterCell(isLoading: true)
+        self.updateLoadingFooterCell(loading: .loading)
         
         var url: String = ""
         url = ApiEndPoint.getSearchResult(text, page).address
@@ -235,6 +255,10 @@ private extension SearchViewController {
         self.searchDataFetchSession = ApiRequest.shared.request(url: url, method: .get) { [weak self] (success, response: BookSearch?) in
             guard let self = self else { return }
             if success {
+                if let total = response?.total {
+                    self.availableBookCount = Int(total) ?? 0
+                }
+                
                 if let books = response?.books {
                     if page == 1 { //New keyword search
                         if books.count == 0 {
@@ -264,7 +288,7 @@ private extension SearchViewController {
                     self.currentPage = pageNumResponse
                 }
             }
-            self.updateLoadingFooterCell(isLoading: false)
+            self.updateLoadingFooterCell(loading: .done)
         }
     }
 }

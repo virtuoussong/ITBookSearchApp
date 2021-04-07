@@ -224,7 +224,7 @@ final class BookDetailViewController: UIViewController {
     //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        self.view.backgroundColor = .white
         self.addSubViews()
         self.makeConstraints()
         self.makeScrollView()
