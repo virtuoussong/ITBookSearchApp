@@ -82,26 +82,26 @@ final class BookItemView: UICollectionViewCell {
     //MARK: - Properties
     var dataSet: Book? {
         didSet {
-            if let imageUrl = dataSet?.image {
+            if let imageUrl = self.dataSet?.image {
                 self.bookImageView.image = nil
                 self.configureImageWith(urlString: imageUrl)
             }
             
-            if let bookName = dataSet?.title {
+            if let bookName = self.dataSet?.title {
                 self.bookNameLabel.text = bookName
             }
             
-            if let subTitle = dataSet?.subtitle {
+            if let subTitle = self.dataSet?.subtitle {
                 self.subTitleLabel.text = subTitle
             } else {
                 self.subTitleLabel.isHidden = true
             }
             
-            if let isbn13 = dataSet?.isbn13 {
+            if let isbn13 = self.dataSet?.isbn13 {
                 self.isbn13Label.text = isbn13
             }
             
-            if let price = dataSet?.price {
+            if let price = self.dataSet?.price {
                 self.priceLabel.text = price
             }
         }
@@ -133,8 +133,8 @@ extension BookItemView {
 private extension BookItemView {
     func addSubViews() {
         [bookImageView, stackView, grayLine].forEach({ contentView.addSubview($0) })
-        [bookNameLabel, subTitleLabel, subInfoStackView].forEach({ stackView.addArrangedSubview($0) })
-        [priceLabel, isbn13Label].forEach({ subInfoStackView.addArrangedSubview($0) })
+        [bookNameLabel, subTitleLabel, subInfoStackView].forEach({ self.stackView.addArrangedSubview($0) })
+        [priceLabel, isbn13Label].forEach({ self.subInfoStackView.addArrangedSubview($0) })
     }
     
     func setupView() {

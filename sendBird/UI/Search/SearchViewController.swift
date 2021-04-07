@@ -48,6 +48,7 @@ final class SearchViewController: UIViewController {
     private var currentPage = "1"
     private var searchedWord = ""
     private var cellHeightCache: [String: CGSize] = [:]
+    private var searchDataFetchSession: URLSessionDataTask?
 }
 
 //MARK: - Setup Views
@@ -84,7 +85,7 @@ private extension SearchViewController {
 //MARK: - Bind ViewModel
 private extension SearchViewController {
     func bindViewModel() {
-        viewModel.data.bind { [unowned self] data in
+        self.viewModel.data.bind { [unowned self] data in
             self.collectionView.isHidden = !(data?.count ?? 0 > 0)
             self.noResultLabel.isHidden = data?.count ?? 0 > 0
             self.collectionView.reloadData()
@@ -95,7 +96,7 @@ private extension SearchViewController {
 //MARK: - Life cycle
 extension SearchViewController {
     override func viewDidLoad() {
-        view.backgroundColor = .white
+        self.view.backgroundColor = .white
         self.addSubViews()
         self.makeConstrains()
         self.bindViewModel()
@@ -120,7 +121,7 @@ extension SearchViewController: UICollectionViewDataSource {
         let index = Double(indexPath.item)
         if index > Double(self.viewModel.data.value?.count ?? 0) * 0.7 {
             guard let page = Int(self.currentPage) else { return }
-            self.searchBookAPIReqeust(text: searchedWord, page: page + 1)
+            self.searchBooksByKeyword(text: searchedWord, page: page + 1)
         }
     }
     
@@ -135,7 +136,7 @@ extension SearchViewController: UICollectionViewDataSource {
 //MARK: - CollectionView flowlayout delegate
 extension SearchViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let data = viewModel.data.value?[indexPath.item]
+        let data = self.viewModel.data.value?[indexPath.item]
         if let id = data?.isbn13, let size = self.cellHeightCache[id] {
             return size
         }
@@ -181,7 +182,7 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text else { return }
         if text != searchedWord {
-            self.searchBookAPIReqeust(text: text, page: 1)
+            self.searchBooksByKeyword(text: text, page: 1)
         }
         self.searchedWord = text
         
@@ -199,16 +200,19 @@ extension SearchViewController: UISearchBarDelegate {
 
 //MARK: - API Call
 private extension SearchViewController {
-    func searchBookAPIReqeust(text: String, page: Int = 1) {
+    func searchBooksByKeyword(text: String, page: Int = 1) {
+        self.searchDataFetchSession?.cancel()
+        self.searchDataFetchSession = nil
+        self.apiSearchRequestForBooks(text: text, page: page)
+    }
+    
+    func apiSearchRequestForBooks(text: String, page: Int = 1) {
+        guard searchDataFetchSession == nil else { return }
+        
         var url: String = ""
         url = ApiEndPoint.getSearchResult(text, page).address
-        
-        if page == 1 {
-            self.viewModel.data.value?.removeAll()
-            self.collectionView.reloadData()
-        }
-        
-        ApiRequest.shared.request(url: url, method: .get) { [weak self] (success, response: BookSearch?) in
+
+        self.searchDataFetchSession = ApiRequest.shared.request(url: url, method: .get) { [weak self] (success, response: BookSearch?) in
             guard let self = self else { return }
             if success {
                 if let books = response?.books {
@@ -216,8 +220,13 @@ private extension SearchViewController {
                         if books.count == 0 {
                             self.noResultLabel.text = "0 items found.\nTry another search word"
                         }
-                        self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+                        
+                        self.viewModel.data.value?.removeAll()
                         self.viewModel.data.value = books
+                        
+                        self.collectionView.reloadData()
+                        self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+                        
                     } else { //scroll feed
                         var copy = self.viewModel.data.value
                         books.enumerated().forEach({ (index, item) in
