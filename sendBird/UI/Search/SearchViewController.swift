@@ -195,7 +195,7 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
 
 //MARK: - Scrollview delegate
 extension SearchViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         self.searchBar.resignFirstResponder()
         self.searchBar.setShowsCancelButton(false, animated: true)
     }
