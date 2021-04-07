@@ -48,10 +48,11 @@ class ApiRequest {
             switch httpResponse.statusCode {
             case 200..<300:
                 do {
-                    let json = try JSONSerialization.jsonObject(with: data!, options: [])
+                    guard let unwrappedData = data else { return }
+                    let json = try JSONSerialization.jsonObject(with: unwrappedData, options: [])
                     print("json: \(json)")
                     
-                    let jsonDecode = try JSONDecoder().decode(T.self, from: data!)
+                    let jsonDecode = try JSONDecoder().decode(T.self, from: unwrappedData)
                     self.cacheData.setObject(ApiCache(data: jsonDecode), forKey: url as NSString)
                     DispatchQueue.main.async {
                         completion(true, jsonDecode)
