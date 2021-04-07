@@ -151,7 +151,7 @@ final class BookDetailViewController: UIViewController {
     var dataSet: BookDetail? {
         didSet {
             if let imageUrl = dataSet?.image {
-                self.bookImageView.loadImageFromUrl(urlString: imageUrl)
+                _ = self.bookImageView.loadImageFromUrl(urlString: imageUrl)
             }
             
             if let title = dataSet?.title {
@@ -214,20 +214,14 @@ final class BookDetailViewController: UIViewController {
         let n = noteTextView.heightAnchor.constraint(equalToConstant: 100)
         return n
     }()
-        
+    
+    //MARK: - Initializer
     convenience init(id: String) {
         self.init()
         self.fetchBookDetailData(id: id)
     }
     
-    deinit {
-        print("Book Detail denit successful")
-    }
-    
-}
-
-//MARK: - Life Cycle
-extension BookDetailViewController {
+    //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -236,6 +230,10 @@ extension BookDetailViewController {
         self.makeScrollView()
         self.setNotification()
         self.addDoneButtonOnKeyboard()
+    }
+    
+    deinit {
+        print("Book Detail denit successful")
     }
 }
 
@@ -354,7 +352,7 @@ private extension BookDetailViewController {
 //MARK: - API Call
 private extension BookDetailViewController {
     func fetchBookDetailData(id: String) {
-        ApiRequest.shared.request(url: ApiEndPoint.getBookDetail(id).address, method: .get) { [weak self] (isSuccessful, response: BookDetail?) in
+        _ = ApiRequest.shared.request(url: ApiEndPoint.getBookDetail(id).address, method: .get) { [weak self] (isSuccessful, response: BookDetail?) in
             if let data = response {
                 self?.dataSet = data
             }

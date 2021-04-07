@@ -25,6 +25,7 @@ final class SearchViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         let c = UICollectionView(frame: .zero, collectionViewLayout: layout)
         c.register(BookItemView.self, forCellWithReuseIdentifier: "BookItemView")
+        c.register(LoadingFooterCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: LoadingFooterCell.identifier)
         c.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
         c.backgroundColor = .white
         c.delegate = self
@@ -49,6 +50,14 @@ final class SearchViewController: UIViewController {
     private var searchedWord = ""
     private var cellHeightCache: [String: CGSize] = [:]
     private var searchDataFetchSession: URLSessionDataTask?
+    
+    //MARK: - Life cycle
+    override func viewDidLoad() {
+        self.view.backgroundColor = .white
+        self.addSubViews()
+        self.makeConstrains()
+        self.bindViewModel()
+    }
 }
 
 //MARK: - Setup Views
@@ -93,16 +102,14 @@ private extension SearchViewController {
     }
 }
 
-//MARK: - Life cycle
-extension SearchViewController {
-    override func viewDidLoad() {
-        self.view.backgroundColor = .white
-        self.addSubViews()
-        self.makeConstrains()
-        self.bindViewModel()
+//MARK: - Actions
+private extension SearchViewController {
+    func updateLoadingFooterCell(isLoading: Bool) {
+        if let footerView = collectionView.subviews.first(where: {$0 is LoadingFooterCell}) as? LoadingFooterCell {
+            footerView.isLoading = isLoading
+        }
     }
 }
-
 
 //MARK: - CollectionView Datasource delegate
 extension SearchViewController: UICollectionViewDataSource {
@@ -131,6 +138,14 @@ extension SearchViewController: UICollectionViewDataSource {
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if kind == UICollectionView.elementKindSectionFooter {
+            let footerCell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: LoadingFooterCell.identifier, for: indexPath)
+            return footerCell
+        }
+        fatalError()
+    }
 }
 
 //MARK: - CollectionView flowlayout delegate
@@ -156,6 +171,10 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
         }
         
         return size
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        return CGSize(width: view.frame.width, height: 50)
     }
 }
 
@@ -207,7 +226,8 @@ private extension SearchViewController {
     }
     
     func apiSearchRequestForBooks(text: String, page: Int = 1) {
-        guard searchDataFetchSession == nil else { return }
+        guard self.searchDataFetchSession == nil else { return }
+        self.updateLoadingFooterCell(isLoading: true)
         
         var url: String = ""
         url = ApiEndPoint.getSearchResult(text, page).address
@@ -244,6 +264,7 @@ private extension SearchViewController {
                     self.currentPage = pageNumResponse
                 }
             }
+            self.updateLoadingFooterCell(isLoading: false)
         }
     }
 }
