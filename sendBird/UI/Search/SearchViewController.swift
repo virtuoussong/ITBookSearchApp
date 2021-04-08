@@ -247,8 +247,7 @@ private extension SearchViewController {
     func apiSearchRequestForBooks(text: String, page: Int = 1) {
         self.updateLoadingFooterCell(loading: .loading)
         
-        var url: String = ""
-        url = ApiEndPoint.getSearchResult(text, page).address
+        let url =  ApiEndPoint.getSearchResult(text, page).address
 
         self.searchDataFetchSession = ApiRequest.shared.request(url: url, method: .get) { [weak self] (success, response: BookSearch?) in
             guard let self = self else { return }

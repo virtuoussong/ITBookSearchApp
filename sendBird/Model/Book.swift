@@ -11,12 +11,6 @@ struct BookSearch: Codable {
     let books: [Book]?
     let total: String?
     let page: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case books = "books"
-        case total = "total"
-        case page = "page"
-    }
 }
 
 struct Book: Codable {
