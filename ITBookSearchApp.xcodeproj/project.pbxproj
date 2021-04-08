@@ -47,17 +47,17 @@
 
 /* Begin PBXFileReference section */
 		DE71B675261DE0740063D604 /* LoadingFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingFooterCell.swift; sourceTree = "<group>"; };
-		DE97F8BF2613738400599A31 /* sendBird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sendBird.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE97F8BF2613738400599A31 /* ITBookSeachApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ITBookSeachApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE97F8C22613738400599A31 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DE97F8C42613738400599A31 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DE97F8C92613738400599A31 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DE97F8CB2613738700599A31 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DE97F8CE2613738700599A31 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DE97F8D02613738700599A31 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DE97F8D52613738700599A31 /* sendBirdTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = sendBirdTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE97F8D52613738700599A31 /* ITBookSearchAppTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ITBookSearchAppTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE97F8D92613738700599A31 /* sendBirdTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sendBirdTests.swift; sourceTree = "<group>"; };
 		DE97F8DB2613738700599A31 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DE97F8E02613738700599A31 /* sendBirdUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = sendBirdUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE97F8E02613738700599A31 /* ITBookSearchAppUITest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ITBookSearchAppUITest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE97F8E42613738700599A31 /* sendBirdUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sendBirdUITests.swift; sourceTree = "<group>"; };
 		DE97F8E62613738700599A31 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DE97F8FA26137E9300599A31 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -111,9 +111,9 @@
 		DE97F8C02613738400599A31 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DE97F8BF2613738400599A31 /* sendBird.app */,
-				DE97F8D52613738700599A31 /* sendBirdTests.xctest */,
-				DE97F8E02613738700599A31 /* sendBirdUITests.xctest */,
+				DE97F8BF2613738400599A31 /* ITBookSeachApp.app */,
+				DE97F8D52613738700599A31 /* ITBookSearchAppTest.xctest */,
+				DE97F8E02613738700599A31 /* ITBookSearchAppUITest.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -228,9 +228,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		DE97F8BE2613738400599A31 /* sendBird */ = {
+		DE97F8BE2613738400599A31 /* ITBookSeachApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE97F8E92613738700599A31 /* Build configuration list for PBXNativeTarget "sendBird" */;
+			buildConfigurationList = DE97F8E92613738700599A31 /* Build configuration list for PBXNativeTarget "ITBookSeachApp" */;
 			buildPhases = (
 				DE97F8BB2613738400599A31 /* Sources */,
 				DE97F8BC2613738400599A31 /* Frameworks */,
@@ -240,14 +240,14 @@
 			);
 			dependencies = (
 			);
-			name = sendBird;
+			name = ITBookSeachApp;
 			productName = sendBird;
-			productReference = DE97F8BF2613738400599A31 /* sendBird.app */;
+			productReference = DE97F8BF2613738400599A31 /* ITBookSeachApp.app */;
 			productType = "com.apple.product-type.application";
 		};
-		DE97F8D42613738700599A31 /* sendBirdTests */ = {
+		DE97F8D42613738700599A31 /* ITBookSearchAppTest */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE97F8EC2613738700599A31 /* Build configuration list for PBXNativeTarget "sendBirdTests" */;
+			buildConfigurationList = DE97F8EC2613738700599A31 /* Build configuration list for PBXNativeTarget "ITBookSearchAppTest" */;
 			buildPhases = (
 				DE97F8D12613738700599A31 /* Sources */,
 				DE97F8D22613738700599A31 /* Frameworks */,
@@ -258,14 +258,14 @@
 			dependencies = (
 				DE97F8D72613738700599A31 /* PBXTargetDependency */,
 			);
-			name = sendBirdTests;
+			name = ITBookSearchAppTest;
 			productName = sendBirdTests;
-			productReference = DE97F8D52613738700599A31 /* sendBirdTests.xctest */;
+			productReference = DE97F8D52613738700599A31 /* ITBookSearchAppTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		DE97F8DF2613738700599A31 /* sendBirdUITests */ = {
+		DE97F8DF2613738700599A31 /* ITBookSearchAppUITest */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE97F8EF2613738700599A31 /* Build configuration list for PBXNativeTarget "sendBirdUITests" */;
+			buildConfigurationList = DE97F8EF2613738700599A31 /* Build configuration list for PBXNativeTarget "ITBookSearchAppUITest" */;
 			buildPhases = (
 				DE97F8DC2613738700599A31 /* Sources */,
 				DE97F8DD2613738700599A31 /* Frameworks */,
@@ -276,9 +276,9 @@
 			dependencies = (
 				DE97F8E22613738700599A31 /* PBXTargetDependency */,
 			);
-			name = sendBirdUITests;
+			name = ITBookSearchAppUITest;
 			productName = sendBirdUITests;
-			productReference = DE97F8E02613738700599A31 /* sendBirdUITests.xctest */;
+			productReference = DE97F8E02613738700599A31 /* ITBookSearchAppUITest.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -303,7 +303,7 @@
 					};
 				};
 			};
-			buildConfigurationList = DE97F8BA2613738400599A31 /* Build configuration list for PBXProject "sendBird" */;
+			buildConfigurationList = DE97F8BA2613738400599A31 /* Build configuration list for PBXProject "ITBookSearchApp" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -316,9 +316,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DE97F8BE2613738400599A31 /* sendBird */,
-				DE97F8D42613738700599A31 /* sendBirdTests */,
-				DE97F8DF2613738700599A31 /* sendBirdUITests */,
+				DE97F8BE2613738400599A31 /* ITBookSeachApp */,
+				DE97F8D42613738700599A31 /* ITBookSearchAppTest */,
+				DE97F8DF2613738700599A31 /* ITBookSearchAppUITest */,
 			);
 		};
 /* End PBXProject section */
@@ -393,12 +393,12 @@
 /* Begin PBXTargetDependency section */
 		DE97F8D72613738700599A31 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = DE97F8BE2613738400599A31 /* sendBird */;
+			target = DE97F8BE2613738400599A31 /* ITBookSeachApp */;
 			targetProxy = DE97F8D62613738700599A31 /* PBXContainerItemProxy */;
 		};
 		DE97F8E22613738700599A31 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = DE97F8BE2613738400599A31 /* sendBird */;
+			target = DE97F8BE2613738400599A31 /* ITBookSeachApp */;
 			targetProxy = DE97F8E12613738700599A31 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -551,7 +551,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.sendbird.chiman.sendBird;
+				PRODUCT_BUNDLE_IDENTIFIER = com.itBookSearch.chiman.itBookSearch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -570,7 +570,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.sendbird.chiman.sendBird;
+				PRODUCT_BUNDLE_IDENTIFIER = com.itBookSearch.chiman.itBookSearch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -664,7 +664,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DE97F8BA2613738400599A31 /* Build configuration list for PBXProject "sendBird" */ = {
+		DE97F8BA2613738400599A31 /* Build configuration list for PBXProject "ITBookSearchApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DE97F8E72613738700599A31 /* Debug */,
@@ -673,7 +673,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DE97F8E92613738700599A31 /* Build configuration list for PBXNativeTarget "sendBird" */ = {
+		DE97F8E92613738700599A31 /* Build configuration list for PBXNativeTarget "ITBookSeachApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DE97F8EA2613738700599A31 /* Debug */,
@@ -682,7 +682,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DE97F8EC2613738700599A31 /* Build configuration list for PBXNativeTarget "sendBirdTests" */ = {
+		DE97F8EC2613738700599A31 /* Build configuration list for PBXNativeTarget "ITBookSearchAppTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DE97F8ED2613738700599A31 /* Debug */,
@@ -691,7 +691,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DE97F8EF2613738700599A31 /* Build configuration list for PBXNativeTarget "sendBirdUITests" */ = {
+		DE97F8EF2613738700599A31 /* Build configuration list for PBXNativeTarget "ITBookSearchAppUITest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DE97F8F02613738700599A31 /* Debug */,
