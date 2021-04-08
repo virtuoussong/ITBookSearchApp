@@ -1,2 +1,2 @@
-# ITBookSeach
-ITBookSearch Chiman
+# ITBookSeachApp
+ITBookSearchApp created by Chiman Song
